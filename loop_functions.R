@@ -12,7 +12,7 @@ lapply(y, mean)
 
 
 x <- 1:4
-lapply(x, runif)    # runif: r uniform distribution
+lapply(x, runif)    # runif: random uniform distribution
 lapply(x, runif, min=100, max=1000)
 
 

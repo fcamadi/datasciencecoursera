@@ -97,7 +97,7 @@ rankhospital <- function(state, outcome, num = "best") {
   }
   
   data_state <- subset(data, State == state)
-
+  
   if (outcome == "heart attack") {
     colnum <- 11
   }
@@ -108,19 +108,27 @@ rankhospital <- function(state, outcome, num = "best") {
     colnum <- 23
   }
   
+  # using a function
+  ranking_state <- function(date_state) {
+    
+    data_state[ ,colnum] <- as.numeric(data_state[ ,colnum])
+    date_state_ordered <- data_state[order(data_state[ ,colnum],data_state[,2]), ]
+    date_state_ordered <- date_state_ordered[(!is.na(date_state_ordered[ ,colnum])),]
+    
+    if(num == "best"){
+      num <- 1
+    }            
+    else if (num == "worst"){
+      num <- nrow(date_state_ordered)
+    }      
+    
+    date_state_ordered[num,2]
+    
+  }
+  
   ## Return hospital name in that state with the given rank 30-day death rate
-  data_state[ ,colnum] <- as.numeric(data_state[ ,colnum])
-  date_state_ordered <- data_state[order(data_state[ ,colnum],data_state[,2]), ]
-  date_state_ordered <- date_state_ordered[(!is.na(date_state_ordered[ ,colnum])),]
-
-  if(num == "best"){
-    num <- 1
-  }            
-  else if (num == "worst"){
-    num <- nrow(date_state_ordered)
-  }      
-
-  date_state_ordered[num,2]
+  ranking_state(data_state)
+  
 }
 
 # Examples
